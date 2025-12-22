@@ -1,0 +1,75 @@
+services:
+  # STRAPI BACKEND
+  backend:
+    container_name: backend-container
+    image: ghcr.io/edoandcode/devblog-app-backend-image:latest
+    env_file: ../../backend/.env.production
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile.production
+    volumes:
+      - public-data:/opt/app/public
+    #ports:
+    #  - "1337:1337"
+    restart: unless-stopped
+    networks:
+      - backend
+    depends_on:
+      - strapi-db
+  # STRAPI DATABASE
+  strapi-db:
+    container_name: postgres-db-container
+    image: postgres:14.5-alpine
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    env_file: ../../backend/.env.production
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/ #using a volume
+    #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+    #ports:
+    #  - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - backend
+  # NEXTJS FRONTEND
+  frontend:
+    container_name: frontend-container
+    image: ghcr.io/edoandcode/devblog-app-frontend-image:latest
+    env_file: ../../frontend/.env.production
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile.production
+    restart: unless-stopped
+    networks:
+      - frontend
+    depends_on:
+      - backend
+  # NGINX
+  nginx:
+    image: nginx:latest
+    ports:
+      - 443:443
+      - 80:80 # nginx handles port 80 and 443
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    #- /home/edoandcode-vidly/vidly-app/certbot/webroot:/var/www/certbot/webroot:rw
+    restart: unless-stopped
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  strapi-data:
+  public-data:
+
+
+networks:
+  frontend:
+    name: frontend
+    driver: bridge
+  backend:
+    name: backend
+    driver: bridge

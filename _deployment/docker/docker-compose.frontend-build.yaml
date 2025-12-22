@@ -4,7 +4,6 @@ services:
   frontend:
     container_name: frontend-container
     image: ghcr.io/edoandcode/devblog-app-frontend-image:latest
-    env_file: ../../frontend/.env.production
     build:
       context: ../../frontend
       dockerfile: Dockerfile.production

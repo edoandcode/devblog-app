@@ -1,4 +1,8 @@
-import type { StrapiApp } from '@strapi/strapi/admin';
+// @ts-nocheck
+import { StrapiApp } from '@strapi/strapi/admin';
+
+import Favicon from './extensions/favicon.ico';
+import Logo from './extensions/logo.png';
 
 export default {
   config: {
@@ -11,7 +15,7 @@ export default {
       // 'es',
       // 'he',
       // 'id',
-      // 'it',
+      'it',
       // 'ja',
       // 'ko',
       // 'ms',
@@ -30,6 +34,20 @@ export default {
       // 'zh-Hans',
       // 'zh',
     ],
+    auth: {
+      logo: Logo
+    },
+    menu: {
+      logo: Logo
+    },
+    head: {
+      favicon: Favicon
+    },
+    tutorials: false,
+    notifications: {
+      releases: false
+    }
+
   },
   bootstrap(app: StrapiApp) {
     console.log(app);

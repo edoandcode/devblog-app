@@ -84,7 +84,6 @@ jobs:
 
 
   build_and_push_frontend:
-    needs: deploy_backend
     runs-on: ubuntu-latest
     environment: production 
 
@@ -102,16 +101,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Generate frontend/.env.production for Next.js build
-        run: |
-          mkdir -p ./frontend
-
-          # Public (browser)
-          echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}" >> ./frontend/.env.production
-          echo "NEXT_PUBLIC_BASE_PATH=${{ secrets.NEXT_PUBLIC_BASE_PATH }}" >> ./frontend/.env.production
-          echo "NEXT_PUBLIC_API_ENDPOINT=${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}" >> ./frontend/.env.production
-          echo "NEXT_PUBLIC_API_TOKEN=${{ secrets.NEXT_PUBLIC_API_TOKEN }}" >> ./frontend/.env.production
-
       - name: Inject token in .npmrc
         run: |
           mkdir -p ./frontend
@@ -122,6 +111,11 @@ jobs:
 
       - name: Build and Push Frontend Image
         working-directory: ./_deployment/docker
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_BASE_PATH: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
+          NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}
+          NEXT_PUBLIC_API_TOKEN: ${{ secrets.NEXT_PUBLIC_API_TOKEN }}
         run: |
           docker compose -f docker-compose.frontend-build.yaml build frontend
           docker compose -f docker-compose.frontend-build.yaml push frontend

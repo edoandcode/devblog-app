@@ -1,0 +1,83 @@
+name: Build, Push and Deploy to Production
+
+on:
+  push:
+    branches:
+      - backend
+
+jobs:
+  build_and_push_backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with: 
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.GH_PAT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate backend/.env.production file
+        run: |
+          mkdir -p ./backend
+          echo "HOST=${{ secrets.HOST }}" >> ./backend/.env.production
+          echo "PORT=${{ secrets.PORT }}" >> ./backend/.env.production
+          echo "APP_KEYS=${{ secrets.APP_KEYS }}" >> ./backend/.env.production
+          echo "API_TOKEN_SALT=${{ secrets.API_TOKEN_SALT }}" >> ./backend/.env.production
+          echo "ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }}" >> ./backend/.env.production
+          echo "TRANSFER_TOKEN_SALT=${{ secrets.TRANSFER_TOKEN_SALT }}" >> ./backend/.env.production
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> ./backend/.env.production
+          echo "DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }}" >> ./backend/.env.production
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> ./backend/.env.production
+          echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> ./backend/.env.production
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> ./backend/.env.production
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> ./backend/.env.production
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> ./backend/.env.production
+          echo "DATABASE_SSL=${{ secrets.DATABASE_SSL }}" >> ./backend/.env.production
+          echo "DATABASE_FILENAME=${{ secrets.DATABASE_FILENAME }}" >> ./backend/.env.production
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./backend/.env.production
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> ./backend/.env.production
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ./backend/.env.production
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> ./backend/.env.production
+      
+
+      - name: Build and Push Images with Docker Compose
+        working-directory: ./_deployment/docker
+        run: |
+          docker compose -f docker-compose.backend-build.yaml build
+          docker compose -f docker-compose.backend-build.yaml push
+
+  deploy_backend:
+    needs: build_and_push_backend
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Setup known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_IP_ADDRESS }} >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts  # Debugging: Display contents of known_hosts
+
+      - name: Connect and pull and start containers
+        run: | 
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP_ADDRESS }} "
+            echo '${{ secrets.GH_PAT }}' | docker login ghcr.io -u '${{ secrets.GH_USERNAME }}' --password-stdin &&
+            cd ${{ secrets.REMOTE_APP_DIRECTORY }}/_deployment/docker &&
+            docker compose --file docker-compose.backend-deploy.yaml pull &&
+            docker compose --file docker-compose.backend-deploy.yaml up -d &&
+            exit
+          "
+      
+      - name: cleanup
+        run: rm -rf ~/.ssh

@@ -27,8 +27,6 @@ export async function fetchApi<T = unknown>(
 
     const url = new URL(`${API.BASE_URL}/${path}`)
 
-    console.log(url.href)
-
     if (deep) {
         url.searchParams.append('pLevel', '5')
     }

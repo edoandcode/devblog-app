@@ -8,7 +8,7 @@ import type { ApiArticle } from '@/types/api/data-types';
 
 const ArticleItem = ({ article }: { article: ApiArticle }) => {
     return (
-        <div className='flex flex-col gap-4 rounded-2xl p-5 w-full shadow-[0_0_20px_0_rgba(255,255,255,0.5)] relative'>
+        <div className='flex flex-col gap-4 rounded-2xl p-5 w-full shadow-[0_0_20px_0_rgba(255,255,255,0.5)] relative h-full'>
             <Link
                 href={`/${article.slug}`}
                 className="absolute z-10 inset-0"

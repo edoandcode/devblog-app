@@ -10,11 +10,29 @@ import { getStrapiData } from '@/services/api';
 import { API } from '@/settings/api';
 import { ROUTES } from '@/settings/routes';
 
+import type { Metadata } from 'next';
 import type { ApiArticle } from '@/types/api/data-types';
+
+
 type ArticlePageProps = {
     params: Promise<{ ['article-slug']: string }>
 }
 
+
+
+export async function generateMetadata(
+    props: ArticlePageProps
+): Promise<Metadata> {
+    const { params } = props
+    const { ['article-slug']: articleSlug } = await params
+
+    const articleData = await getStrapiData<ApiArticle>(`${API.ARTICLES}/${articleSlug}`)
+
+    return {
+        title: articleData ? `${articleData.title} | DevBlog` : 'Article Not Found | DevBlog',
+        description: articleData ? articleData.abstract : 'The requested article could not be found.',
+    }
+}
 
 export async function generateStaticParams() {
     const articles = await getStrapiData<ApiArticle[]>(`${API.ARTICLES}`, true)
@@ -56,6 +74,7 @@ const ArticlePage = async (props: ArticlePageProps) => {
                     span={12}
                     span-2xl={10}
                     offset-2xl={1}
+                    className='pb-10'
                 >
                     <h1 className="text-4xl text-positive mb-10">{articleData?.title}</h1>
                     <StrapiRichTextBlockParser

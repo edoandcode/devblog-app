@@ -98,7 +98,7 @@ Localmente:
 Questo progetto utilizza `vps-setup` come **Git submodule**.
 
 Il submodule è responsabile di tutta la parte infrastrutturale.
-La sua documentazione è contenuta nel repository dedicato ed è da considerarsi parte integrante del progetto.
+La sua documentazione è contenuta nel [repository dedicato](https://github.com/edoandcode/vps-setup) ed è da considerarsi parte integrante del progetto.
 
 Clonazione corretta del repository:
 

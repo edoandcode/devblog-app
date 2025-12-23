@@ -1,0 +1,2 @@
+@edoandcode:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=COPY_PERSONAL_ACCESS_TOKEN_HERE

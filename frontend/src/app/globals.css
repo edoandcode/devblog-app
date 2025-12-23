@@ -1,26 +1,23 @@
 @import "tailwindcss";
+@import "../../ui-kit-tailwind-safelist.css";
+
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --positive: #ffffff;
+  --negative: #243441;
+  --primary: #2287ba;
+  --secondary: #fc7d0b;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-positive: #000000;
+  --color-negative: #f0f0f0;
+  --color-primary: #005f87;
+  --color-secondary: #c75b00;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--negative);
+  color: var(--positive);
   font-family: Arial, Helvetica, sans-serif;
 }

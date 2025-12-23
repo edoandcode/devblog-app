@@ -9,6 +9,23 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: !isDev,
   },
+  images: {
+    unoptimized: isDev,
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'devblog-cms.edoandcode.cc',
+        //  port: '1337',
+        pathname: '/uploads/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

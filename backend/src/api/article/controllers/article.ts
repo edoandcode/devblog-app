@@ -15,5 +15,4 @@ export default factories.createCoreController('api::article.article', ({ strapi 
             return this.transformResponse(sanitizeEntity)
         }
     })
-
 });

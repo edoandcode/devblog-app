@@ -9963,6 +9963,11 @@ stdin-discarder@^0.2.2:
   resolved "https://registry.yarnpkg.com/stdin-discarder/-/stdin-discarder-0.2.2.tgz#390037f44c4ae1a1ae535c5fe38dc3aba8d997be"
   integrity sha512-UhDfHmA92YAlNnCfhmq0VeNL5bDbiZGg7sZ2IvPsXubGkiNa9EC+tUTsjBRsYUAz87btI6/1wf4XoVvQ3uRnmQ==
 
+strapi-plugin-media-prefix@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/strapi-plugin-media-prefix/-/strapi-plugin-media-prefix-1.0.6.tgz#bd48719183b404c5e7d93e7f12b141cdb9358475"
+  integrity sha512-S9eme12qjsGKgSoBF5LY17ywGAV0LFL8mxR/8ee7ZmsDbqPHli+szuQYqhH0ayf4P7uA54DxwJblG6/hD8ArhQ==
+
 strapi-v5-plugin-populate-deep@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/strapi-v5-plugin-populate-deep/-/strapi-v5-plugin-populate-deep-4.0.5.tgz#3c909a9dfdcbc81fe4d7a747b1f8e5e5279b3c54"

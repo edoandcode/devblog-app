@@ -4,4 +4,7 @@ export default () => ({
             defaultDepth: 5, // Default is 5
         }
     },
+    'media-prefix': {
+        enabled: true,
+    },
 });

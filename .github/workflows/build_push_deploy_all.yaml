@@ -84,6 +84,7 @@ jobs:
 
 
   build_and_push_frontend:
+    needs: deploy_backend
     runs-on: ubuntu-latest
     environment: production 
 
@@ -115,7 +116,6 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_BASE_PATH: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
           NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}
-          NEXT_PUBLIC_API_TOKEN: ${{ secrets.NEXT_PUBLIC_API_TOKEN }}
         run: |
           docker compose -f docker-compose.frontend-build.yaml build frontend
           docker compose -f docker-compose.frontend-build.yaml push frontend

@@ -1,8 +1,5 @@
-import Image from 'next/image';
 
 import ArticlesList from '@/components/ArticlesList';
-import Header from '@/components/Header';
-import Logo from '@/components/Logo';
 
 import { getStrapiData } from '@/services/api';
 import { API } from '@/settings/api';
@@ -17,7 +14,6 @@ export default async function Home() {
 
   return (
     <div>
-      <Header></Header>
       <ArticlesList articles={articles}></ArticlesList>
     </div>
   );

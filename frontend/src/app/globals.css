@@ -10,8 +10,8 @@
 }
 
 @theme {
-  --color-positive: #000000;
-  --color-negative: #f0f0f0;
+  --color-positive: #ffffff;
+  --color-negative: #243441;
   --color-primary: #005f87;
   --color-secondary: #c75b00;
 }

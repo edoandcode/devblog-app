@@ -11,7 +11,9 @@ const ArticlesList = ({ articles }: { articles: ApiArticle[] | null }) => {
         <Grid>
             {articles?.map((article) => (
                 <Grid.Col
-                    span={4}
+                    span={12}
+                    span-md={6}
+                    span-xl={4}
                     key={article.id}
                 >
                     <ArticleItem article={article} />

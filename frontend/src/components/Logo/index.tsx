@@ -9,7 +9,7 @@ const Logo = () => {
     return (
         <Link
             href={ROUTES.HOME}
-            className='block w-full aspect-square relative rounded-full overflow-hidden bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.9)] border-neutral-200 border-1'
+            className='block w-full aspect-square relative rounded-full overflow-hidden bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.9)] border-neutral-200 border'
         >
             <Image
                 className='object-cover scale-75'

@@ -57,7 +57,7 @@ const ArticlePage = async (props: ArticlePageProps) => {
                     span-2xl={10}
                     offset-2xl={1}
                 >
-                    <h1 className="text-4xl text-positive mb-2 mb-10">{articleData?.title}</h1>
+                    <h1 className="text-4xl text-positive mb-10">{articleData?.title}</h1>
                     <StrapiRichTextBlockParser
                         content={articleData?.text_content}
                     ></StrapiRichTextBlockParser>
